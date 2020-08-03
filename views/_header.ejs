@@ -1,0 +1,17 @@
+
+<header class="header">
+    <a href="#" class="logo">Rewards</a>
+    <input class="menu-btn" type="checkbox" id="menu-btn" />
+    <label class="menu-icon" for="menu-btn"><span class="navicon"></span></label>
+    <ul class="menu">
+
+        <% if (locals.user) {%>
+            <li><a href="/rewards/link">Rewards</a></li>
+            <li><a href="/"><%= user.name %></a> </li>
+            <li><a href="/users/sign-out">Sign-Out</a></li>
+            <% }else {%>
+                <li><a href="/users/register">Sign-Up</a></li>
+                <li><a href="/users/login">Sign-In</a></li>
+                <%}%>
+    </ul>
+</header>

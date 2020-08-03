@@ -1,0 +1,14 @@
+<div id="rewards" class="container">
+    <h1>Current Reward Points: <%= user.rewards %>  </h1>
+    <br>
+
+    <h2>Earn Reward through Refferals!</h2>
+    <br>
+    <form action="/rewards/send_link" method="POST">
+        <p>Your Invitation Code: <span><%= user.userRefferalCode %></span></p>
+        <label for="email"> Please Enter the recepient Email address:</label>
+        <br>
+        <input type="email" name="email" id="email" placeholder="email">
+        <button type="submit" class="btn btn-primary text-center">Send Referral</button>
+    </form>
+</div>
