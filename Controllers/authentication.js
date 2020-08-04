@@ -57,53 +57,54 @@ module.exports.destroySession = function(req, res) {
 module.exports.reffered = async (req,res) => {
     try {
         let refferedByUser = User.findOne({userRefferalCode: req.params.userRefferalCode});
-        if(!refferedByUser){
-            console.log('error in finding the refer');
-            return res.redirect('back');
-        }
-        if(refferedByUser){
-            // for weekends and holidays
-            let currDate = new Date();
-            let currDay = currDate.getDay();
-            let currDe = currDate.getDate();
-            let currMonth = currDate.getMonth();
-            if((currDay == 6 || currDay == 7) || 
-               (currDe == 28 && currMonth == 3) || 
-               (currDe == 4 && currMonth == 11) || 
-               (currDe == 3 && currMonth == 8) || 
-               (currDe == 15 && currMonth == 8) || 
-               (currDe == 31 && currMonth == 12)){
-                let updatedUser = await User.updateOne(refferedByUser, {$inc: {rewards: 30}}, {
-                    new: true,
-                    upsert: true
-                });
-                let updatedUserValue = await User.updateOne(refferedByUser, { $inc: {userReffered:1}}, {
-                    new: true,
-                    upsert: true
-                });
-                if(updatedUser){
-                    return res.redirect('/users/register');
+        User.findOne({userRefferalCode: req.params.userRefferalCode}, async function(err,user){
+            if(err){
+                return res.redirect('back');
+            }
+            if(refferedByUser){
+                let currDate = new Date();
+                let currDay = currDate.getDay();
+                let currMonth = currDate.getMonth();
+                let currDe = currDate.getDate();
+                if((currDay == 6 || currDay == 7) ||  //weekends
+                (currDe == 28 && currMonth == 3) || //national holidays
+                (currDe == 4 && currMonth == 11) || 
+                (currDe == 3 && currMonth == 8) || 
+                (currDe == 15 && currMonth == 8) || 
+                (currDe == 31 && currMonth == 12) && 
+                (user.userReffered !== 4 || user.userReffered<4)){ //u[to 3 users
+                    let updatedUser = await User.updateOne(refferedByUser, {$inc: {rewards: 30}}, {
+                        new: true,
+                        upsert: true
+                    });
+                    let updatedUserValue = await User.updateOne(refferedByUser, { $inc: {userReffered:1}}, {
+                        new: true,
+                        upsert: true
+                    });
+                    if(updatedUser){
+                        return res.redirect('/users/register');
+                    }else{
+                        console.log('error!!!!!!');
+                        return res.redirect('back')
+                    }
                 }else{
-                    console.log('error!!!!!!');
-                    return res.redirect('back')
-                }
-            } else{
-                let updatedUser = await User.updateOne(refferedByUser, {$inc: {rewards: 10}}, {
-                    new: true,
-                    upsert: true
-                });
-                let updatedUserValue = await User.updateOne(refferedByUser, { $inc: {userReffered:1}}, {
-                    new: true,
-                    upsert: true
-                });
-                if(updatedUser){
-                    return res.redirect('/users/register');
-                }else{
-                    console.log('error!!!!!!');
-                    return res.redirect('back');
-                }
-            }          
-        }
+                    let updatedUser = await User.updateOne(refferedByUser, {$inc: {rewards: 10}}, {
+                        new: true,
+                        upsert: true
+                    });
+                    let updatedUserValue = await User.updateOne(refferedByUser, { $inc: {userReffered:1}}, {
+                        new: true,
+                        upsert: true
+                    });
+                    if(updatedUser){
+                        return res.redirect('/users/register');
+                    }else{
+                        console.log('error!!!!!!');
+                        return res.redirect('back');
+                    }
+                }       
+            }
+        })
     }catch (error) {
         if(error){
             console.log("error in reffered user", error);
