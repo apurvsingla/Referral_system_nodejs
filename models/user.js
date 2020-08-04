@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema({
     rewards: {
         type: Number,
         default: 0
+    },
+    specialReffered: {
+        type: Number,
+        default: 0
     }
 }, {
     timestams: true
