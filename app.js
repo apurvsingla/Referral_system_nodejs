@@ -14,7 +14,6 @@ const  app = express();
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./Config/passport-local-strategy');
-const passportJWT = require('./Config/passport-jwt-strategy');
 
 
 //mongo
