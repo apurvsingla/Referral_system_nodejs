@@ -66,13 +66,16 @@ module.exports.reffered = async (req,res) => {
                 let currDay = currDate.getDay();
                 let currMonth = currDate.getMonth();
                 let currDe = currDate.getDate();
-                if((currDay == 2 || currDay == 7) ||  //weekends
+                if((currDay == 6 || currDay == 7) ||  //weekends
                 (currDe == 28 && currMonth == 3) || //national holidays
                 (currDe == 4 && currMonth == 11) || 
                 (currDe == 3 && currMonth == 8) || 
                 (currDe == 15 && currMonth == 8) || 
-                (currDe == 31 && currMonth == 12)){ //upto 3 users
-                    if((user.specialReffered<4)){
+                (currDe == 26 && currMonth == 1)||
+                (currDe == 29 && currMonth == 1)||
+                (currDe == 21 && currMonth == 2)|| //u can add the special points for more dates...
+                (currDe == 31 && currMonth == 12)){ 
+                    if((user.specialReffered<4)){//upto 3 users
                     let updatedUser = await User.updateOne(refferedByUser, {$inc: {rewards: 30}}, {
                         new: true,
                         upsert: true
