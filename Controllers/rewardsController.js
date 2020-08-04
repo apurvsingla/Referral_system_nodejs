@@ -16,7 +16,7 @@ module.exports.reward = async (req,res) => {
 
 module.exports.sendReward = async (req,res) => {
     try {
-        let reward = await User.findOne();
+        let reward = await User.findOne({userRefferalCode: req.params.userRefferalCode});
         if(!reward){
             return console.log("error!!!!");
         }
