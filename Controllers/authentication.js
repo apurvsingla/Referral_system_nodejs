@@ -9,7 +9,7 @@ module.exports.create = function(req, res) {
     User.findOne({ email: req.body.email }, function(err, user) {
         if (err) {
             console.log('error! please check the details');
-            return res.redirect('back');
+            return;
         }
         if (!user) {
             User.create(req.body, function(err, user) {
@@ -66,18 +66,22 @@ module.exports.reffered = async (req,res) => {
                 let currDay = currDate.getDay();
                 let currMonth = currDate.getMonth();
                 let currDe = currDate.getDate();
-                if((currDay == 6 || currDay == 7) ||  //weekends
+                if((currDay == 2 || currDay == 7) ||  //weekends
                 (currDe == 28 && currMonth == 3) || //national holidays
                 (currDe == 4 && currMonth == 11) || 
                 (currDe == 3 && currMonth == 8) || 
                 (currDe == 15 && currMonth == 8) || 
-                (currDe == 31 && currMonth == 12) && 
-                (user.userReffered !== 4 || user.userReffered<4)){ //u[to 3 users
+                (currDe == 31 && currMonth == 12)){ //upto 3 users
+                    if((user.specialReffered<4)){
                     let updatedUser = await User.updateOne(refferedByUser, {$inc: {rewards: 30}}, {
                         new: true,
                         upsert: true
                     });
                     let updatedUserValue = await User.updateOne(refferedByUser, { $inc: {userReffered:1}}, {
+                        new: true,
+                        upsert: true
+                    });
+                    let updatedUserValueSpecial = await User.updateOne(refferedByUser, { $inc: {specialReffered:1}}, {
                         new: true,
                         upsert: true
                     });
@@ -87,6 +91,9 @@ module.exports.reffered = async (req,res) => {
                         console.log('error!!!!!!');
                         return res.redirect('back')
                     }
+                }else{
+                    res.redirect('back');
+                }
                 }else{
                     let updatedUser = await User.updateOne(refferedByUser, {$inc: {rewards: 10}}, {
                         new: true,
