@@ -58,7 +58,8 @@ module.exports.reffered = async (req,res) => {
     try {
         let refferedByUser = User.findOne({userRefferalCode: req.params.userRefferalCode});
         if(!refferedByUser){
-            return console.log('error in finding the refer');
+            console.log('error in finding the refer');
+            return res.redirect('back');
         }
         if(refferedByUser){
             // for weekends and holidays
@@ -83,7 +84,8 @@ module.exports.reffered = async (req,res) => {
                 if(updatedUser){
                     return res.redirect('/users/register');
                 }else{
-                    return console.log('error!!!!!!')
+                    console.log('error!!!!!!');
+                    return res.redirect('back')
                 }
             } else{
                 let updatedUser = await User.updateOne(refferedByUser, {$inc: {rewards: 10}}, {
@@ -97,13 +99,15 @@ module.exports.reffered = async (req,res) => {
                 if(updatedUser){
                     return res.redirect('/users/register');
                 }else{
-                    return console.log('error!!!!!!')
+                    console.log('error!!!!!!');
+                    return res.redirect('back');
                 }
             }          
         }
     }catch (error) {
         if(error){
             console.log("error in reffered user", error);
+            return res.redirect('back');
         }
     } 
 };
