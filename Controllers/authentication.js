@@ -9,7 +9,7 @@ module.exports.create = function(req, res) {
     User.findOne({ email: req.body.email }, function(err, user) {
         if (err) {
             console.log('error! please check the details');
-            return;
+            return res.redirect('back');
         }
         if (!user) {
             User.create(req.body, function(err, user) {
@@ -37,7 +37,7 @@ module.exports.createSession = async function(req, res) {
 
     } catch (err) {
         console.log('********', err);
-        return;
+        return res.redirect('back');
     }
 };
 
