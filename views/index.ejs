@@ -1,8 +1,15 @@
 <main>
   <div class="container">
-    <h1 >First Website to offer reward on refferals!!!</h1>
-    <p>Just send the referal link to the other persons and just earn the rewards and reedem them on your fav product!</p>
-    <p>Your Refferal Code: <%= user.userRefferalCode %> </p>
+    <h1 >First Website to offer reward on referrals!!!</h1>
+    <p>Just send the referral link to the other persons and just earn the rewards and reedem them on your fav product!</p>
+    <p>Your Referral Code: <%= user.userRefferalCode %> </p>
+    <p>Total user Referrals: <%= user.userReffered %> </p>
+    <% if(user.specialReffered){ %> 
+      <p>Special Referrals, get more rewards on special days, upto 3 users: <%= user.specialReffered %> </p>
+    <% } %> 
+    <% if(user.refferedBy){ %> 
+      <p>Signed Up using: <%= user.refferedBy %> </p>
+    <% } %> 
     <a href="/rewards/link">
       <button type="button" class="btn btn-primary text-center" >Send Referrals</button>
     </a>
