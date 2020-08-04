@@ -13,8 +13,8 @@ const  app = express();
 //passport
 const session = require('express-session');
 const passport = require('passport');
-const passportLocal = require('./config/passport-local-strategy');
-const passportJWT = require('./config/passport-jwt-strategy');
+const passportLocal = require('./Config/passport-local-strategy');
+const passportJWT = require('./Config/passport-jwt-strategy');
 
 
 //mongo
